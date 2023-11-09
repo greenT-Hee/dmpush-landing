@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>권한 알림</title>
+    <style>
+      @font-face {
+        font-family: "Pretendard-Regular";
+        src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+          format("woff");
+        font-weight: 400;
+        font-style: normal;
+      }
+      html {
+        scroll-behavior: smooth !important;
+      }
+      body {
+        background: #f7f4fa;
+        font-family: "Pretendard-Regular" !important;
+      }
+      *,
+      body,
+      h1,
+      h2,
+      p,
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      li {
+        list-style: none;
+      }
+      h1.ir {
+        position: absolute;
+        clip: rect(0 0 0 0);
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+      }
+      img {
+        padding: 0;
+        margin: 0;
+      }
+      .pointer {
+        width: 40px;
+        rotate: -25deg;
+        margin: 12px 0 0 4px;
+      }
+      .section-01,
+      .section-02 {
+        display: block;
+        padding: 0 20px 0px;
+        margin: 30px auto;
+        max-width: 480px;
+      }
+
+      /* rullet */
+      .event-rullet .fail-img {
+        width: 350px;
+        margin: 0 auto 40px;
+        display: block;
+      }
+      .event-rullet h2 {
+        font-size: 24px;
+        color: #333;
+        font-weight: 900;
+        text-align: center;
+        padding-bottom: 12px;
+      }
+      .event-rullet h3.sub-title {
+        font-size: 16px;
+        color: #555;
+        font-weight: 400;
+        text-align: center;
+      }
+      .event-rullet .rouletter {
+        position: relative;
+        width: 350px;
+        height: 350px;
+        margin: 40px auto;
+      }
+      .event-rullet .rouletter-bg {
+        width: 350px;
+        height: 350px;
+        border-radius: 350px;
+        overflow: hidden;
+      }
+      .event-rullet .rouletter-wacu {
+        width: 100%;
+        height: 100%;
+        background: #f5f5f2 url("./assets/images/rullet.png") no-repeat;
+        background-size: 100%;
+        transform-origin: center;
+      }
+
+      .event-rullet .rouletter-arrow {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .event-rullet .rouletter-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 80px;
+        background: #f65741;
+        color: #fff;
+        font-weight: 900;
+        font-size: 20px;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+      }
+      .goIntroPart {
+        display: block;
+        width: fit-content;
+        text-decoration: none;
+        margin: 0 auto;
+
+        font-size: 18px;
+        color: #9747ff;
+        font-weight: 700;
+      }
+
+      /* 이벤트 상세 설명 */
+      .event-intro {
+        padding-top: 40px;
+      }
+      .event-intro h2 {
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        display: block;
+        width: fit-content;
+        position: relative;
+        margin: 0 auto 20px;
+        background: #9747ff;
+        color: #fff;
+        padding: 8px 60px;
+        border-radius: 32px;
+      }
+
+      .event-intro h3 {
+        font-size: 16px;
+        font-weight: 500;
+        padding: 0 0 12px;
+        text-align: center;
+      }
+
+      .event-intro .img-evnet {
+        display: block;
+        width: 350px;
+        max-width: 100%;
+        margin: 0 auto 40px;
+
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.13); */
+      }
+      .event-intro .case-01,
+      .event-intro .case-02,
+      .event-intro .case-03 {
+        margin-bottom: 100px;
+      }
+      .select-case-box {
+        margin: 0 0 120px;
+        padding: 40px 20px;
+        border-radius: 16px;
+        background: #ab6bff26;
+      }
+      .event-intro .desc {
+        font-weight: 400;
+        color: #333;
+        font-size: 16px;
+        text-align: center;
+      }
+      .event-intro .desc.highlight {
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+        z-index: 1;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .event-intro .desc.highlight::after {
+        position: absolute;
+        display: block;
+        content: "";
+        background: #8c2bff80;
+        border-radius: 8px;
+        opacity: 0.6;
+        z-index: -1;
+        left: -8px;
+        bottom: 0;
+        padding: 0 8px;
+        height: 10px;
+        width: 100%;
+      }
+
+      .event-intro .case-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        max-width: 350px;
+        margin: 20px auto 0;
+      }
+
+      .event-intro .case-list li {
+        width: calc(100% / 2);
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        padding: 20px;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      .event-intro .case-list li a {
+        text-decoration: none;
+      }
+      .event-intro .case-list li .title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        text-align: center;
+      }
+      .event-intro .case-list li img {
+        display: block;
+        margin: 16px auto 0;
+      }
+      .event-intro .case-02 .case-title,
+      .event-intro .case-03 .case-title {
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        display: block;
+        width: fit-content;
+        position: relative;
+        margin: 0 auto 20px;
+        background: #9747ff;
+        color: #fff;
+        padding: 8px 60px;
+        border-radius: 32px;
+      }
+      .event-intro .case-02 .case-title-desc,
+      .event-intro .case-03 .case-title-desc {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: #333;
+        padding-bottom: 20px;
+      }
+      /* 이벤트 참여 실패 */
+
+      @media (max-width: 414px) {
+        .event-rullet h2 {
+          font-size: 18px;
+        }
+        .event-rullet h3.sub-title {
+          font-size: 14px;
+        }
+        .event-rullet .rouletter {
+          width: 280px;
+          height: 280px;
+        }
+        .event-rullet .rouletter-bg {
+          width: 280px;
+          height: 280px;
+        }
+        .event-rullet .rouletter-wacu {
+          background: #f5f5f2 url("./assets/images/rullet-small.png") no-repeat;
+        }
+        .event-rullet .rouletter-btn {
+          width: 50px;
+          height: 50px;
+          font-size: 14px;
+        }
+
+        .event-intro .case-list {
+          flex-direction: column;
+        }
+
+        .event-intro .case-list li:first-of-type img {
+          width: 100%;
+        }
+        .event-rullet .fail-img {
+          width: 280px;
+        }
+      }
+      @media (max-width: 337px) {
+        .event-rullet .rouletter {
+          width: 240px;
+          height: 240px;
+        }
+        .event-rullet .rouletter-bg {
+          width: 240px;
+          height: 240px;
+        }
+        .event-rullet .rouletter-wacu {
+          background: #f5f5f2 url("./assets/images/rullet-xsmall.png") no-repeat;
+        }
+        .event-rullet .rouletter-btn {
+          width: 55px;
+          height: 55px;
+          font-size: 16px;
+        }
+
+        .event-intro .desc.highlight::after {
+          display: none;
+        }
+
+        .event-rullet .fail-img {
+          width: 240px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <img class="pointer" src="/assets/images/point.png" alt="" />
+    <section class="section-01">
+      <h1 class="ir">룰렛이벤트</h1>
+      <!-- 서비스 워커 등록 성공 -->
+      <div id="event-rullet" class="event-rullet">
+        <h2 class="title">알림 허용 누르고, 룰렛을 돌려주세요!</h2>
+        <h3 class="sub-title">
+          이벤트 참여 방법은 하단 상세 설명을 참고해주세요
+        </h3>
+        <div class="rouletter">
+          <div id="rullet-all" style="display: none">
+            <div class="rouletter-bg">
+              <div class="rouletter-wacu"></div>
+            </div>
+            <div class="rouletter-arrow">
+              <img src="./assets/images/rullet-arrow.svg" alt="" />
+            </div>
+            <button class="rouletter-btn">GO!</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 참여 방법 안내로 -->
+      <a href="#section-title" class="goIntroPart">▽ 참여 방법 보러 가기 ▽</a>
+    </section>
+
+    <section class="section-02">
+      <h1 class="ir">룰렛이벤트</h1>
+      <div id="event-intro" class="event-intro">
+        <h2 id="section-title">참여 방법 안내</h2>
+        <div class="case-01">
+          <h3>허용 버튼을 누르면 이벤트 참여 완료!</h3>
+          <img
+            class="img-evnet"
+            src="./assets/images/event03.png"
+            alt="step3" />
+        </div>
+        <div class="select-case-box">
+          <p class="desc highlight">권한 요청 알람이 뜨지 않나요?</p>
+          <p class="desc">좌측 상단 아이콘 모양을 확인해주세요.</p>
+          <ul class="case-list">
+            <li>
+              <a href="#case-02">
+                <p class="title">알림 차단이 보여요</p>
+                <img src="./assets/images/ico-case3.svg" alt="" />
+              </a>
+            </li>
+            <li>
+              <a href="#case-03">
+                <p class="title">세팅/ 자물쇠가 보여요</p>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  ">
+                  <img src="./assets/images/ico-case2.svg" alt="" />
+                  <img src="./assets/images/ico-case4.svg" alt="" />
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- case02 -->
+        <div id="case-02" class="case-02">
+          <p class="case-title">case 01</p>
+          <p class="case-title-desc">세팅/자물쇠가 보여요</p>
+          <div>
+            <h3>1. 좌측 상단 아이콘을 누르고 사이트 허용 버튼을 누르세요.</h3>
+            <img
+              class="img-evnet"
+              src="./assets/images/event04.png"
+              alt="step3" />
+          </div>
+        </div>
+        <!-- case03 -->
+        <div id="case-03" class="case-03">
+          <p class="case-title">case 02</p>
+          <p class="case-title-desc">세팅/자물쇠가 보여요</p>
+          <div>
+            <h3>1. 좌측 상단 아이콘을 누르고 권한 재설정 버튼을 눌러주세요.</h3>
+            <img
+              class="img-evnet"
+              src="./assets/images/event01.png"
+              alt="step1" />
+          </div>
+          <div>
+            <h3>2. 하단에 보이는 버튼이나 F5키를 눌러 새로고침합니다.</h3>
+            <img
+              class="img-evnet"
+              src="./assets/images/event02.png"
+              alt="step2" />
+          </div>
+          <div>
+            <h3>3. 허용 버튼을 누르면 이벤트 참여 완료!</h3>
+            <img
+              class="img-evnet"
+              src="./assets/images/event03.png"
+              alt="step3" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+
+<script th:inline="javascript">
+  // let pushId = [[${pid}]];
+</script>
+<script th:inline="javascript" type="module" src="firebase_client.js"></script>
+
+<script>
+  const $eventIntro = document.querySelector("#event-intro");
+  const $eventFail = document.querySelector("#event-fail");
+  const $rullet = document.querySelector("#event-rullet");
+
+  // 룰렛 돌리기
+  const rotateRullet = (endDeg) => {
+    let rolLength = 2;
+    let panel = document.querySelector(".rouletter-wacu");
+    let deg = [];
+    for (let i = 1, len = rolLength; i <= len; i++) {
+      deg.push((360 / len) * i);
+    }
+
+    let baseDeg = 3600;
+    let stopDeg = endDeg; // 나중에는 데이터에서 주는 값을 써야 함
+    panel.animate(
+      [
+        { transform: "rotate(0deg)" },
+        { transform: "rotate(" + stopDeg + "deg)" },
+      ],
+      {
+        fill: "forwards",
+        duration: 1500,
+        easing: "ease-out",
+      }
+    );
+  };
+
+  function showRullet() {
+    const cookieValue = getCookie("event-click");
+    const $rulletAll = document.querySelector("#rullet-all");
+    const $rulletLayout = document.querySelector(".rouletter");
+    if (cookieValue === "Y") {
+      $rulletAll.style.display = "none";
+      $rulletLayout.innerHTML = `<img class="fail-img" src="./assets/images/fail.png" alt="당첨 실패"/>`;
+    } else {
+      $rulletAll.style.display = "block";
+    }
+  }
+
+  async function completeGet() {
+    const SITE = location.search.split("=")[1];
+    const TOKEN = localStorage.getItem("token");
+    console.log(SITE, TOKEN);
+    // if (!SITE || !TOKEN) return;
+
+    const response = await fetch("https://api.dmpush.kr/event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        site: "e7f106a5-6dcb-45ff-8327-e5521aa06434",
+        token:
+          "foWCkkQmn9gHfKvuLybO0O:APA91bGG7gU1i0TycDeAWGW8Zu1580sXVTtwYbtLmqW_hpTM2sA5vMmvFgiXh_bLM-Qe7_TwXwCdCrSj8Fa3pPzeQg0sd47Gs9KyOpLynQpAoeXRP_3CK5_GMkEI3UU2sRQ6ca1nLap8",
+      }),
+    });
+    1;
+    const jsonData = await response.json();
+
+    if (jsonData.success) {
+      if (jsonData.data.msg === "E0901") {
+        // 비당첨
+        rotateRullet(jsonData.data.prize);
+        setCookie("event-click", "Y");
+
+        setTimeout(() => {
+          showRullet();
+        }, 2250);
+      } else {
+        // 당첨
+        setTimeout(() => {
+          location.href = jsonData.data.url;
+        }, 2250);
+      }
+    } else if (!jsonData.success) {
+      alert("이벤트 참여를 완료해주세요😭!");
+    }
+  }
+
+  // 쿠키 가져오기
+  // 주어진 이름의 쿠키를 반환하는데,
+  // 조건에 맞는 쿠키가 없다면 undefined를 반환합니다.
+  function getCookie(name) {
+    let matches = document.cookie.match(
+      new RegExp(
+        "(?:^|; )" +
+          name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+          "=([^;]*)"
+      )
+    );
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+  // 쿠키 설정하기
+  function setCookie(name, value, options = {}) {
+    options = {
+      path: "/",
+      // 필요한 경우, 옵션 기본값을 설정할 수도 있습니다.
+      ...options,
+    };
+
+    if (options.expires instanceof Date) {
+      options.expires = options.expires.toUTCString();
+    }
+
+    let updatedCookie =
+      encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+      updatedCookie += "; " + optionKey;
+      let optionValue = options[optionKey];
+      if (optionValue !== true) {
+        updatedCookie += "=" + optionValue;
+      }
+    }
+
+    document.cookie = updatedCookie;
+  }
+
+  document.addEventListener("click", function (e) {
+    let target = e.target;
+    if (target.className === "register-btn") {
+      isParticipateEvent();
+    }
+    if (target.className === "retry-btn") {
+      retry();
+    }
+    if (target.className === "rouletter-btn") {
+      completeGet();
+    }
+  });
+
+  window.addEventListener("load", () => {
+    const $rullet = document.querySelector("#rullet-all");
+    showRullet();
+  });
+</script>
