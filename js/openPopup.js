@@ -51,7 +51,7 @@ const openPopup = () => {
       ${dmpush_content}
       </p>
       <div style="
-        max-width: 280px;
+        max-width: 260px;
         border-radius: 8px;
         margin: 10px auto 0;
       ">
@@ -106,14 +106,14 @@ const openPopup = () => {
 
   const agreeBtn = document.querySelector("#agreeBtn");
   const regretBtn = document.querySelector("#regretBtn");
-  let popupWidth = 1200;
-  let popupHeight = 500;
+  let popupWidth = 600;
+  let popupHeight = 582;
   let popupX = window.screen.width / 2 - popupWidth / 2;
-  let popupY = window.screen.height / 2 - popupHeight / 2;
+  let popupY = window.screen.height / 2 - popupHeight/ 2;
   
   agreeBtn.addEventListener("click", () => {
     window.open(
-      `https://api.dmpush.kr/popup?push_id=${pid}`,
+      `http://localhost:5500/popup.html?push_id=${pid}`,
       "demo",
       "status=no, height=" +
         popupHeight +
@@ -128,20 +128,6 @@ const openPopup = () => {
 
   Div.remove();
 });
-
-  // const $viewEventResultBtn = document.querySelector('#agreeBtn');
-  // if($viewEventResultBtn) {
-  //   $viewEventResultBtn.addEventListener('click', (e) => {
-  //     getPushApi();
-  //   })
-  // }
-
-  // async function getPushApi() {
-  //   const response = await fetch("https://api.dmpush.kr/push");
-  //   const jsonData = await response.json();
-  //   console.log(jsonData);
-  // }
-
 
 function setCookie(name,value,expireDays) {
   let today = new Date();
