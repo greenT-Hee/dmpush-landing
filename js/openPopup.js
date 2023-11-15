@@ -112,7 +112,7 @@ const openPopup = () => {
   
   agreeBtn.addEventListener("click", () => {
     window.open(
-      `https://api.dmpush.kr/popup?push_id=${pushId}`,
+      `https://api.dmpush.kr/popup?push_id=${pid}`,
       "demo",
       "status=no, height=" +
         popupHeight +
