@@ -55,7 +55,7 @@ const openPopup = () => {
         border-radius: 8px;
         margin: 10px auto 0;
       ">
-        <img src="../assets/images/img-event01.png"  style="width:100%"/>
+        <img src="./assets/images/img-event01.png"  style="width:100%"/>
       </div>
     </div>
     <div 
