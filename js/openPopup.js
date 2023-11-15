@@ -1,8 +1,8 @@
 let dmpush_title = "스타벅스 아메리카노 받아가세요!"; //29자. 600, 29자
 let dmpush_content = '푸시 알림 받기를 허용하고 <br/> 스타벅스 커피를 공짜로 받아가세요!'; //99자, 400, 16px
-let pid = "9c632f16-a559-4207-b7d5-844194238936";
+let pid = '9c632f16-a559-4207-b7d5-844194238936'
 const openPopup = () => {
-  const Div = document.createElement("div");
+  const Div = document.createElement("div");  
   Div.id = "dmpush";
   document.body.appendChild(Div); 
   // body > div#dmpush
@@ -55,7 +55,7 @@ const openPopup = () => {
         border-radius: 8px;
         margin: 10px auto 0;
       ">
-        <img src="/assets/images/img-event01.png"  style="width:100%"/>
+        <img src="../assets/images/img-event01.png"  style="width:100%"/>
       </div>
     </div>
     <div 
